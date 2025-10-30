@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>riley's profile</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      color: white;
+      background: black;
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas#background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: black;
+    }
+
+    .main-container {
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid #f55aa0;
+      border-radius: 25px;
+      box-shadow: 0 0 40px rgba(245, 90, 160, 0.3);
+      padding: 40px;
+      width: 520px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      animation: fadeIn 1.5s ease;
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      padding: 10px 20px;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid rgba(245, 90, 160, 0.4);
+    }
+
+    nav h1 {
+      color: #f55aa0;
+      font-weight: 600;
+      font-size: 20px;
+      text-transform: lowercase;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    nav ul li {
+      position: relative;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    nav ul li a:hover {
+      color: #f55aa0;
+    }
+
+    .dropdown {
+      cursor: pointer;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: rgba(30, 30, 30, 0.95);
+      top: 30px;
+      left: 0;
+      min-width: 200px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 10;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .dropdown-content a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      color: white;
+      font-size: 13px;
+      text-decoration: none;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    .dropdown-content a img {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+    }
+
+    .dropdown-content a:hover {
+      background: #f55aa0;
+      color: black;
+      box-shadow: 0 0 10px #f55aa0;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .profile img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 3px solid #f55aa0;
+      object-fit: cover;
+      box-shadow: 0 0 25px #f55aa0;
+    }
+
+    .profile h2 {
+      margin-top: 12px;
+      font-size: 26px;
+      text-transform: lowercase;
+    }
+
+    .song-box {
+      margin-top: 25px;
+      display: inline-flex;
+      align-items: center;
+      background: rgba(20, 20, 20, 0.7);
+      border: 1px solid #f55aa0;
+      border-radius: 15px;
+      padding: 15px 20px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px rgba(245, 90, 160, 0.2);
+      transition: 0.3s;
+      animation: fadeIn 3s ease;
+    }
+
+    .song-box:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(245, 90, 160, 0.4);
+    }
+
+    .song-box.playing {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(245, 90, 160, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(245, 90, 160, 0.8); }
+    }
+
+    .song-box img {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin-right: 15px;
+      border: 2px solid #f55aa0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .song-box img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px #f55aa0;
+    }
+
+    .song-info { text-align: left; }
+
+    .song-info b { color: #f55aa0; }
+
+    .song-info p { margin: 3px 0; font-size: 15px; }
+
+    .content { transition: opacity 0.4s ease; }
+
+    footer {
+      margin-top: 20px;
+      font-size: 13px;
+      opacity: 0.6;
+      text-transform: lowercase;
+    }
+
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+  </style>
+</head>
+<body>
+
+  <canvas id="background"></canvas>
+
+  <div class="main-container">
+    <nav>
+      <h1>riley</h1>
+      <ul>
+        <li><a id="homeBtn">home</a></li>
+        <li class="dropdown">
+          <a>minecraft ▼</a>
+          <div class="dropdown-content" id="mcList"></div>
+        </li>
+        <li><a id="socialsBtn">socials</a></li>
+      </ul>
+    </nav>
+
+    <div id="content" class="content">
+      <div class="profile">
+        <img src="pfp.png" alt="Profile Picture">
+        <h2>riley</h2>
+
+        <div id="songContainer">
+          <div class="song-box" id="songBox">
+            <a href="https://soundcloud.com/imastupidbitch" target="_blank">
+              <img id="cover" src="soundcloud.png" alt="Album Cover">
+            </a>
+            <div class="song-info" id="currentSong">
+              <p>reload the page if this doesn't work</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>© 2025 riley</footer>
+  </div>
+
+  <script>
+    // --- Minecraft Accounts ---
+    const accounts = [
+      "9om","0ue","InfoLeaks","dishonouring","Alterability","overaffect",
+      "HelloJuliet","PerPlayerKit","precursers","transgirlslut","Agonism",
+      "rileykittycat","Zyrela","eretic","malgender","virginians","v1nes",
+      "suchashame","Refetch","kissthecurb","RileyOnEstrogen"
+    ];
+
+    const mcList = document.getElementById("mcList");
+
+    accounts.forEach(user => {
+      const a = document.createElement("a");
+      a.href = `https://namemc.com/${user}`;
+      a.target = "_blank";
+      a.innerHTML = `<img src="https://minotar.net/avatar/${user}" alt="${user}"> ${user}`;
+      mcList.appendChild(a);
+    });
+
+    // --- Last.fm API ---
+    const lastfmUser = "meowriley";
+    const apiKey = "aa496350289c5975245ef91a23649d04";
+    const currentSongElement = document.getElementById("currentSong");
+    const songBox = document.getElementById("songBox");
+
+    async function getCurrentSong() {
+      try {
+        const response = await fetch(
+          `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${lastfmUser}&api_key=${apiKey}&format=json`
+        );
+        const data = await response.json();
+        const track = data.recenttracks.track[0];
+        const nowPlaying = track["@attr"]?.nowplaying === "true";
+
+        if (nowPlaying) {
+          songBox.classList.add("playing");
+          currentSongElement.innerHTML = `
+            <p>🎵 <b>Now Playing</b></p>
+            <p>${track.name}</p>
+            <p>by <b>${track.artist["#text"]}</b></p>
+          `;
+        } else {
+          songBox.classList.remove("playing");
+          currentSongElement.innerHTML = `
+            <p>Last listened to:</p>
+            <p>${track.name}</p>
+            <p>by <b>${track.artist["#text"]}</b></p>
+          `;
+        }
+      } catch (error) {
+        currentSongElement.innerHTML = "<p>Error fetching song info.</p>";
+        console.error(error);
+      }
+    }
+
+    getCurrentSong();
+    setInterval(getCurrentSong, 1000);
+
+    // --- Socials Page Toggle ---
+    const contentDiv = document.getElementById("content");
+    const homeBtn = document.getElementById("homeBtn");
+    const socialsBtn = document.getElementById("socialsBtn");
+
+    const profileHTML = contentDiv.innerHTML;
+    const socialsHTML = `
+      <div style="animation: fadeIn 1s ease;">
+        <h2 style="color:#f55aa0; margin-bottom:10px;">socials</h2>
+        <p>Discord: <a href="https://discord.com/users/1142433636822548601" target="_blank" style="color:#f55aa0;">rileysies</a></p>
+        <p>GitHub: <a href="https://github.com/rileysies" target="_blank" style="color:#f55aa0;">rileysies</a></p>
+        <p>SoundCloud: <a href="https://soundcloud.com/imastupidbitch" target="_blank" style="color:#f55aa0;">imastupidbitch</a></p>
+        <p>Pronouns: <a href="https://en.pronouns.page/@rileysies" target="_blank" style="color:#f55aa0;">rileysies</a></p>
+        <p>NameMC: <a href="https://namemc.com/9om" target="_blank" style="color:#f55aa0;">@9om</a></p>
+      </div>
+    `;
+
+    homeBtn.addEventListener("click", () => {
+      contentDiv.style.opacity = 0;
+      setTimeout(() => {
+        contentDiv.innerHTML = profileHTML;
+        contentDiv.style.opacity = 1;
+      }, 300);
+    });
+
+    socialsBtn.addEventListener("click", () => {
+      contentDiv.style.opacity = 0;
+      setTimeout(() => {
+        contentDiv.innerHTML = socialsHTML;
+        contentDiv.style.opacity = 1;
+      }, 300);
+    });
+
+    // --- Animated Particle Background ---
+    const canvas = document.getElementById("background");
+    const ctx = canvas.getContext("2d");
+
+    let particles = [];
+    let w, h;
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      particles = [];
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 2,
+          dx: (Math.random() - 0.5) * 0.5,
+          dy: (Math.random() - 0.5) * 0.5
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "white";
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > w) p.dx *= -1;
+        if (p.y < 0 || p.y > h) p.dy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener("resize", resize);
+    resize();
+    draw();
+  </script>
+</body>
+</html>
