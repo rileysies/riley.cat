@@ -36,7 +36,7 @@
 
     .main-container {
       background: rgba(20, 20, 20, 0.8);
-      border: 2px solid #f55aa0;
+      border: 2px solid #8E6DBF;
       border-radius: 25px;
       box-shadow: 0 0 40px rgba(245, 90, 160, 0.3);
       padding: 40px;
@@ -58,7 +58,7 @@
     }
 
     nav h1 {
-      color: #f55aa0;
+      color: #8E6DBF;
       font-weight: 600;
       font-size: 20px;
       text-transform: lowercase;
@@ -84,7 +84,7 @@
     }
 
     nav ul li a:hover {
-      color: #f55aa0;
+      color: #8E6DBF;
     }
 
     .dropdown {
@@ -124,9 +124,9 @@
     }
 
     .dropdown-content a:hover {
-      background: #f55aa0;
+      background: #8E6DBF;
       color: black;
-      box-shadow: 0 0 10px #f55aa0;
+      box-shadow: 0 0 10px #8E6DBF;
     }
 
     .dropdown:hover .dropdown-content {
@@ -137,9 +137,9 @@
       width: 130px;
       height: 130px;
       border-radius: 50%;
-      border: 3px solid #f55aa0;
+      border: 3px solid #8E6DBF;
       object-fit: cover;
-      box-shadow: 0 0 25px #f55aa0;
+      box-shadow: 0 0 25px #8E6DBF;
       transition: box-shadow 0.4s ease;
     }
 
@@ -159,7 +159,7 @@
       display: inline-flex;
       align-items: center;
       background: rgba(20, 20, 20, 0.7);
-      border: 1px solid #f55aa0;
+      border: 1px solid #8E6DBF;
       border-radius: 15px;
       padding: 15px 20px;
       backdrop-filter: blur(6px);
@@ -188,18 +188,18 @@
       border-radius: 10px;
       object-fit: cover;
       margin-right: 15px;
-      border: 2px solid #f55aa0;
+      border: 2px solid #8E6DBF;
       cursor: pointer;
       transition: 0.3s;
     }
 
     .song-box img:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 15px #f55aa0;
+      box-shadow: 0 0 15px #8E6DBF;
     }
 
     .song-info { text-align: left; }
-    .song-info b { color: #f55aa0; }
+    .song-info b { color: #8E6DBF; }
     .song-info p { margin: 3px 0; font-size: 15px; }
 
     footer {
@@ -360,6 +360,39 @@
     getCurrentSong();
     setInterval(getCurrentSong, 15000);
 
+    // --- Socials Page Toggle ---
+    const contentDiv = document.getElementById("content");
+    const homeBtn = document.getElementById("homeBtn");
+    const socialsBtn = document.getElementById("socialsBtn");
+
+    const profileHTML = contentDiv.innerHTML;
+    const socialsHTML = `
+      <div style="animation: fadeIn 1s ease;">
+        <h2 style="color:#8E6DBF; margin-bottom:10px;">socials</h2>
+        <p>Discord: <a href="https://discord.com/users/1142433636822548601" target="_blank" style="color:#8E6DBF;">rileysies</a></p>
+        <p>GitHub: <a href="https://github.com/rileysies" target="_blank" style="color:#8E6DBF;">rileysies</a></p>
+        <p>SoundCloud: <a href="https://soundcloud.com/imastupidbitch" target="_blank" style="color:#8E6DBF;">imastupidbitch</a></p>
+        <p>Pronouns: <a href="https://en.pronouns.page/@rileysies" target="_blank" style="color:#8E6DBF;">rileysies</a></p>
+        <p>NameMC: <a href="https://namemc.com/9om" target="_blank" style="color:#8E6DBF;">@9om</a></p>
+      </div>
+    `;
+
+    homeBtn.addEventListener("click", () => {
+      contentDiv.style.opacity = 0;
+      setTimeout(() => {
+        contentDiv.innerHTML = profileHTML;
+        contentDiv.style.opacity = 1;
+      }, 300);
+    });
+
+    socialsBtn.addEventListener("click", () => {
+      contentDiv.style.opacity = 0;
+      setTimeout(() => {
+        contentDiv.innerHTML = socialsHTML;
+        contentDiv.style.opacity = 1;
+      }, 300);
+    });
+
     // --- Animated Particle Background ---
     const canvas = document.getElementById("background");
     const ctx = canvas.getContext("2d");
@@ -383,7 +416,7 @@
 
     function draw() {
       ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "pink";
+      ctx.fillStyle = "purple";
       particles.forEach(p => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
