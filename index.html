@@ -140,7 +140,13 @@
       border: 3px solid #f55aa0;
       object-fit: cover;
       box-shadow: 0 0 25px #f55aa0;
+      transition: box-shadow 0.4s ease;
     }
+
+    .online  { box-shadow: 0 0 25px #43b581; border-color: #43b581; }
+    .idle    { box-shadow: 0 0 25px #faa61a; border-color: #faa61a; }
+    .dnd     { box-shadow: 0 0 25px #f04747; border-color: #f04747; }
+    .offline { box-shadow: 0 0 25px #747f8d; border-color: #747f8d; }
 
     .profile h2 {
       margin-top: 12px;
@@ -193,12 +199,8 @@
     }
 
     .song-info { text-align: left; }
-
     .song-info b { color: #f55aa0; }
-
     .song-info p { margin: 3px 0; font-size: 15px; }
-
-    .content { transition: opacity 0.4s ease; }
 
     footer {
       margin-top: 20px;
@@ -223,13 +225,17 @@
           <a>minecraft ▼</a>
           <div class="dropdown-content" id="mcList"></div>
         </li>
+        <li class="dropdown">
+          <a>domains ▼</a>
+          <div class="dropdown-content" id="domainList"></div>
+        </li>
         <li><a id="socialsBtn">socials</a></li>
       </ul>
     </nav>
 
     <div id="content" class="content">
       <div class="profile">
-        <img src="pfp.png" alt="Profile Picture">
+        <img id="pfp" src="pfp.png" alt="Profile Picture">
         <h2>riley</h2>
 
         <div id="songContainer">
@@ -238,7 +244,7 @@
               <img id="cover" src="soundcloud.png" alt="Album Cover">
             </a>
             <div class="song-info" id="currentSong">
-              <p>reload the page if this doesn't work</p>
+              <p>reload the page if this doesn't load</p>
             </div>
           </div>
         </div>
@@ -251,14 +257,13 @@
   <script>
     // --- Minecraft Accounts ---
     const accounts = [
-      "9om","0ue","InfoLeaks","dishonouring","Alterability","overaffect",
+      "Reskinned","9om","0ue","InfoLeaks","dishonouring","Alterability","overaffect",
       "HelloJuliet","PerPlayerKit","precursers","transgirlslut","Agonism",
       "rileykittycat","Zyrela","eretic","malgender","virginians","v1nes",
-      "suchashame","Refetch","kissthecurb","Reskinned"
+      "suchashame","Refetch","kissthecurb",
     ];
 
     const mcList = document.getElementById("mcList");
-
     accounts.forEach(user => {
       const a = document.createElement("a");
       a.href = `https://namemc.com/${user}`;
@@ -266,6 +271,55 @@
       a.innerHTML = `<img src="https://minotar.net/avatar/${user}" alt="${user}"> ${user}`;
       mcList.appendChild(a);
     });
+
+    // --- Domains List ---
+    const domains = [
+      { name: "riley.cat", link: "https://riley.cat" },
+      { name: "vzy.my", link: "https://vzy.my" },
+      { name: "deoxys.xyz", link: "https://" },
+      { name: "femboyfriday.gay", link: "https://femboyfriday.gay" },
+      { name: "ivys.wtf", link: "https://ivys.wtf" },
+      { name: "latias.fun", link: "https://" },
+      { name: "mcpractice.xyz", link: "https://mcpractice.xyz" },
+      { name: "ohara.lol", link: "https://ohara.lol" },
+      { name: "roses.lol", link: "https://roses.lol" },
+      { name: "spyglass.rest", link: "https://spyglass.rest" },
+      { name: "transgender.cv", link: "https://transgender.cv" },
+      { name: "voltprac.xyz", link: "https://voltprac.xyz" },
+      { name: "morechaos.fun", link: "https://morechaos.fun" },
+      { name: "ecstacy.shop", link: "https://ecstacy.shop" },
+    ];
+
+    const domainList = document.getElementById("domainList");
+    domains.forEach(site => {
+      const a = document.createElement("a");
+      a.href = site.link;
+      a.target = "_blank";
+      a.innerHTML = `${site.name}`;
+      domainList.appendChild(a);
+    });
+
+    // --- Lanyard Discord API ---
+    const discordID = "1142433636822548601";
+    const pfp = document.getElementById("pfp");
+
+    async function updateDiscordProfile() {
+      try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${discordID}`);
+        const data = await res.json();
+        const user = data.data.discord_user;
+        const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=512`;
+        const status = data.data.discord_status;
+
+        pfp.src = avatarUrl;
+        pfp.className = status;
+      } catch (err) {
+        console.error("Error fetching Lanyard data:", err);
+      }
+    }
+
+    updateDiscordProfile();
+    setInterval(updateDiscordProfile, 15000);
 
     // --- Last.fm API ---
     const lastfmUser = "meowriley";
@@ -304,45 +358,11 @@
     }
 
     getCurrentSong();
-    setInterval(getCurrentSong, 1000);
-
-    // --- Socials Page Toggle ---
-    const contentDiv = document.getElementById("content");
-    const homeBtn = document.getElementById("homeBtn");
-    const socialsBtn = document.getElementById("socialsBtn");
-
-    const profileHTML = contentDiv.innerHTML;
-    const socialsHTML = `
-      <div style="animation: fadeIn 1s ease;">
-        <h2 style="color:#f55aa0; margin-bottom:10px;">socials</h2>
-        <p>Discord: <a href="https://discord.com/users/1142433636822548601" target="_blank" style="color:#f55aa0;">rileysies</a></p>
-        <p>GitHub: <a href="https://github.com/rileysies" target="_blank" style="color:#f55aa0;">rileysies</a></p>
-        <p>SoundCloud: <a href="https://soundcloud.com/imastupidbitch" target="_blank" style="color:#f55aa0;">imastupidbitch</a></p>
-        <p>Pronouns: <a href="https://en.pronouns.page/@rileysies" target="_blank" style="color:#f55aa0;">rileysies</a></p>
-        <p>NameMC: <a href="https://namemc.com/9om" target="_blank" style="color:#f55aa0;">@9om</a></p>
-      </div>
-    `;
-
-    homeBtn.addEventListener("click", () => {
-      contentDiv.style.opacity = 0;
-      setTimeout(() => {
-        contentDiv.innerHTML = profileHTML;
-        contentDiv.style.opacity = 1;
-      }, 300);
-    });
-
-    socialsBtn.addEventListener("click", () => {
-      contentDiv.style.opacity = 0;
-      setTimeout(() => {
-        contentDiv.innerHTML = socialsHTML;
-        contentDiv.style.opacity = 1;
-      }, 300);
-    });
+    setInterval(getCurrentSong, 15000);
 
     // --- Animated Particle Background ---
     const canvas = document.getElementById("background");
     const ctx = canvas.getContext("2d");
-
     let particles = [];
     let w, h;
 
