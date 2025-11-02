@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="pfp.png">
   <meta property="og:title" content="riley.cat">
   <meta property="og:description" content="meow meow meow meow meow?">
-  <meta property="og:image" content="https://riley.cat/pfp.png">
+  <meta property="og:image" content="">
   <meta property="og:url" content="https://riley.cat">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#8E6DBF"> <!-- The embed bar color -->
@@ -232,10 +232,6 @@
           <a>minecraft ▼</a>
           <div class="dropdown-content" id="mcList"></div>
         </li>
-        <li class="dropdown">
-          <a>domains ▼</a>
-          <div class="dropdown-content" id="domainList"></div>
-        </li>
         <li><a id="socialsBtn">socials</a></li>
       </ul>
     </nav>
@@ -264,7 +260,7 @@
   <script>
     // --- Minecraft Accounts ---
     const accounts = [
-      "Reskinned","9om","0ue","InfoLeaks","dishonouring","Alterability","overaffect",
+      "Reskinned","9om","cawts","0ue","InfoLeaks","dishonouring","Alterability","overaffect",
       "HelloJuliet","PerPlayerKit","precursers","transgirlslut","Agonism",
       "rileykittycat","Zyrela","eretic","malgender","virginians","v1nes",
       "suchashame","Refetch","kissthecurb",
@@ -277,33 +273,6 @@
       a.target = "_blank";
       a.innerHTML = `<img src="https://minotar.net/avatar/${user}" alt="${user}"> ${user}`;
       mcList.appendChild(a);
-    });
-
-    // --- Domains List ---
-    const domains = [
-      { name: "riley.cat", link: "https://riley.cat" },
-      { name: "vzy.my", link: "https://vzy.my" },
-      { name: "deoxys.xyz", link: "https://" },
-      { name: "femboyfriday.gay", link: "https://femboyfriday.gay" },
-      { name: "ivys.wtf", link: "https://ivys.wtf" },
-      { name: "latias.fun", link: "https://" },
-      { name: "mcpractice.xyz", link: "https://mcpractice.xyz" },
-      { name: "ohara.lol", link: "https://ohara.lol" },
-      { name: "roses.lol", link: "https://roses.lol" },
-      { name: "spyglass.rest", link: "https://spyglass.rest" },
-      { name: "transgender.cv", link: "https://transgender.cv" },
-      { name: "voltprac.xyz", link: "https://voltprac.xyz" },
-      { name: "morechaos.fun", link: "https://morechaos.fun" },
-      { name: "ecstacy.shop", link: "https://ecstacy.shop" },
-    ];
-
-    const domainList = document.getElementById("domainList");
-    domains.forEach(site => {
-      const a = document.createElement("a");
-      a.href = site.link;
-      a.target = "_blank";
-      a.innerHTML = `${site.name}`;
-      domainList.appendChild(a);
     });
 
     // --- Lanyard Discord API ---
