@@ -10,7 +10,7 @@
   <meta property="og:image" content="">
   <meta property="og:url" content="https://riley.cat">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#8E6DBF"> <!-- The embed bar color -->
+  <meta name="theme-color" content="#8E6DBF">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
@@ -243,7 +243,7 @@
 
         <div id="songContainer">
           <div class="song-box" id="songBox">
-            <a href="https://soundcloud.com/imastupidbitch" target="_blank">
+            <a id="songLink" href="https://soundcloud.com/imastupidbitch" target="_blank">
               <img id="cover" src="soundcloud.png" alt="Album Cover">
             </a>
             <div class="song-info" id="currentSong">
@@ -302,6 +302,8 @@
     const apiKey = "aa496350289c5975245ef91a23649d04";
     const currentSongElement = document.getElementById("currentSong");
     const songBox = document.getElementById("songBox");
+    const coverImg = document.getElementById("cover");
+    const songLink = document.getElementById("songLink");
 
     async function getCurrentSong() {
       try {
@@ -311,6 +313,13 @@
         const data = await response.json();
         const track = data.recenttracks.track[0];
         const nowPlaying = track["@attr"]?.nowplaying === "true";
+
+        const coverUrl = track.image && track.image.length > 0
+          ? track.image[track.image.length - 1]["#text"]
+          : "soundcloud.png";
+
+        coverImg.src = coverUrl;
+        songLink.href = track.url || "https://soundcloud.com/imastupidbitch";
 
         if (nowPlaying) {
           songBox.classList.add("playing");
