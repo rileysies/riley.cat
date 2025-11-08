@@ -1,1 +1,334 @@
-ts pmo
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta property="og:title" content="riley.cat">
+  <meta property="og:description" content="meow meow meow meow meow?">
+  <meta property="og:image" content="">
+  <meta property="og:url" content="https://riley.cat">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#702AB7">
+  <title>riley</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#07000b;
+      --bg2:#15001a;
+      --accent:#702AB7;
+      --glass: rgba(255,255,255,0.03);
+      --card-bg: rgba(10,6,12,0.6);
+      --text: #eae8ff;
+      --muted: #bfb7d9;
+    }
+
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;}
+    body{
+      background: radial-gradient(1200px 600px at 10% 20%, rgba(112,42,183,0.14), transparent 10%),
+                  radial-gradient(900px 500px at 85% 80%, rgba(46,6,60,0.12), transparent 10%),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text);
+    }
+
+    .bg-anim{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      background: linear-gradient(60deg, rgba(112,42,183,0.06), rgba(0,0,0,0) 20%, rgba(112,42,183,0.04));
+      pointer-events:none;
+      animation: floatBG 18s linear infinite;
+      mix-blend-mode: screen;
+    }
+    @keyframes floatBG {
+      0%{ transform: translateY(0) rotate(0deg); }
+      50%{ transform: translateY(-30px) rotate(3deg); }
+      100%{ transform: translateY(0) rotate(0deg); }
+    }
+
+    .card-wrap {
+      position:relative;
+      z-index:1;
+      width:380px;
+      max-width:92vw;
+      border-radius:36px;
+      padding:28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.01) 100%);
+      box-shadow: 0 10px 40px rgba(2,0,10,0.65), inset 0 1px 0 rgba(255,255,255,0.02);
+      border: 1px solid rgba(112,42,183,0.18);
+      backdrop-filter: blur(6px) saturate(120%);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:14px;
+      transform: scale(0.9);
+      opacity: 0;
+      transition: transform 0.6s ease, box-shadow 0.6s ease, opacity 0.8s ease;
+    }
+    .card-wrap.show {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .card-wrap:hover {
+      transform: scale(1.03);
+      box-shadow: 0 18px 60px rgba(112,42,183,0.28);
+    }
+
+    .avatar-wrap{
+      width:136px;
+      height:136px;
+      border-radius:50%;
+      padding:6px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.0));
+      border: 2px solid rgba(255,255,255,0.06);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin-top:-80px;
+      box-shadow: 0 12px 30px rgba(8,0,20,0.6);
+      transition: transform 1.2s ease, box-shadow 0.6s ease;
+    }
+    .avatar{
+      width:116px;
+      height:116px;
+      border-radius:50%;
+      object-fit:cover;
+      display:block;
+      border:4px solid var(--card-bg);
+      background: linear-gradient(180deg, rgba(112,42,183,0.08), rgba(0,0,0,0.45));
+      transition: transform 1.2s ease;
+    }
+    .avatar-wrap:hover {
+      transform: scale(1.06) rotate(6deg);
+      box-shadow: 0 16px 40px rgba(112,42,183,0.45);
+    }
+    .avatar-wrap:hover .avatar {
+      transform: rotate(-6deg) scale(1.05);
+    }
+
+    .username {
+      margin-top:6px;
+      font-weight:700;
+      font-size:1.6rem;
+      color:#ffffff;
+      text-align:center;
+      text-shadow:
+        0 0 8px rgba(255,255,255,0.95),
+        0 0 20px rgba(255,255,255,0.25),
+        0 0 42px rgba(112,42,183,0.32);
+      letter-spacing:0.4px;
+      transition: text-shadow 0.4s ease;
+    }
+    .username:hover {
+      text-shadow:
+        0 0 12px rgba(255,255,255,1),
+        0 0 24px rgba(255,255,255,0.8),
+        0 0 54px rgba(112,42,183,0.75);
+    }
+
+    .now-playing{
+      width:100%;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:10px 12px;
+      border-radius:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      border: 1px solid rgba(255,255,255,0.02);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .now-playing:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 26px rgba(112,42,183,0.3);
+    }
+
+    .album {
+      width:64px;
+      height:64px;
+      border-radius:10px;
+      overflow:hidden;
+      flex:0 0 64px;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(112,42,183,0.03));
+      box-shadow: 0 6px 18px rgba(4,0,12,0.45);
+    }
+    .album img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    .track-info { display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .track-title { font-weight:600; font-size:0.98rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition: color 0.3s ease; }
+    .track-artist { font-size:0.88rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .now-playing:hover .track-title { color: var(--accent); }
+
+    .status-bubble{
+      margin-left:auto;
+      font-size:0.78rem;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(112,42,183,0.12);
+      color: #eae6ff;
+      border: 1px solid rgba(112,42,183,0.26);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .now-playing:hover .status-bubble {
+      background: rgba(112,42,183,0.22);
+      transform: scale(1.1);
+    }
+
+    .socials {
+      width:100%;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin-top:10px;
+      padding-bottom:4px;
+    }
+    .socials a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      border-radius:10px;
+      text-decoration:none;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.002));
+      transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      font-size:1.1rem;
+    }
+    .socials a:hover{
+      transform: translateY(-6px) scale(1.1);
+      box-shadow: 0 18px 40px rgba(112,42,183,0.35);
+      color:var(--accent);
+    }
+
+    .meta {
+      margin-top:6px;
+      font-size:0.78rem;
+      color:var(--muted);
+      text-align:center;
+      opacity:0.95;
+    }
+
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: var(--bg1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: opacity 0.6s ease;
+    }
+    #loader.hidden {opacity: 0; pointer-events: none;}
+
+    .loader-text {
+      font-size: 1.2rem;
+      color: var(--text);
+      text-shadow: 0 0 10px var(--accent);
+      margin-bottom: 16px;
+    }
+    .loader-bar {
+      width: 220px;
+      height: 6px;
+      background: rgba(112,42,183,0.25);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .loader-bar span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg,var(--accent),#fff,var(--accent));
+      animation: loadProgress 1.5s ease-in-out forwards;
+    }
+    @keyframes loadProgress {
+      0% {width: 0%;}
+      100% {width: 100%;}
+    }
+
+    @media (max-width:420px){
+      .avatar-wrap{ width:112px; height:112px; margin-top:-64px; }
+      .avatar{ width:96px; height:96px; }
+      .card-wrap{ padding:18px; border-radius:28px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="loader">
+    <div class="loader-text">loading</div>
+    <div class="loader-bar"><span></span></div>
+  </div>
+
+  <div class="bg-anim" aria-hidden="true"></div>
+
+  <div class="card-wrap" role="region" aria-label="Profile card" id="profileCard">
+    <div class="avatar-wrap"><img id="avatar" class="avatar" src="" alt="Riley's Discord avatar"></div>
+    <div class="username" id="displayName">Riley</div>
+
+    <div class="now-playing" id="nowPlaying">
+      <div class="album"><img src="" alt="album art" id="albumImg"></div>
+      <div class="track-info">
+        <div class="track-title" id="trackTitle">Loading track…</div>
+        <div class="track-artist" id="trackArtist">Last.fm</div>
+      </div>
+      <div class="status-bubble" id="playStatus">—</div>
+    </div>
+
+    <div class="socials">
+      <a href="https://t.me/rescopes" target="_blank"><i class="fa-brands fa-telegram-plane"></i></a>
+      <a href="https://discord.com/users/1142433636822548601" target="_blank"><i class="fa-brands fa-discord"></i></a>
+      <a href="https://namemc.com/profile/9om" target="_blank"><i class="fa-solid fa-cube"></i></a>
+      <a href="https://open.spotify.com/user/31kcl3foiantv5wvv4cryp2k5pbi?si=7217ba9eedb44ebd" target="_blank"><i class="fa-brands fa-spotify"></i></a>
+      <a href="https://snapchat.com/add/rescopes" target="_blank"><i class="fa-brands fa-snapchat-ghost"></i></a>
+      <a href="https://soundcloud.com/discourages" target="_blank"><i class="fa-brands fa-soundcloud"></i></a>
+    </div>
+
+    <div class="meta" id="metaLine">Discord &middot; Last.fm live</div>
+  </div>
+
+<script>
+  const DISCORD_ID = "1142433636822548601";
+  const LASTFM_USER = "meowriley";
+  const LASTFM_KEY = "ea340a5fdf775b585c459ddc903399cd";
+  const $ = id => document.getElementById(id);
+
+  window.addEventListener("load", ()=>{
+    setTimeout(()=>{
+      $("loader").classList.add("hidden");
+      $("profileCard").classList.add("show");
+    },1000);
+  });
+
+  fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
+    .then(r=>r.json())
+    .then(d=>{
+      const u=d.data.discord_user;
+      const url=u.avatar?`https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png?size=512`:`https://cdn.discordapp.com/embed/avatars/${parseInt(u.id)%5}.png`;
+      $("avatar").src=url;
+      $("displayName").textContent = u.global_name || u.username;
+    });
+
+  async function fetchLastFm(){
+    const res=await fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USER}&api_key=${LASTFM_KEY}&format=json&limit=1`);
+    const j=await res.json();
+    const t=j.recenttracks.track[0];
+    const now=t["@attr"]&&t["@attr"].nowplaying==="true";
+    $("trackTitle").textContent=t.name;
+    $("trackArtist").textContent=t.artist["#text"];
+    $("albumImg").src=t.image.pop()["#text"];
+    $("playStatus").textContent=now?"Now playing":"Last played";
+  }
+  fetchLastFm(); setInterval(fetchLastFm,60000);
+</script>
+
+</body>
+</html>
